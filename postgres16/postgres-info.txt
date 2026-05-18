@@ -1,0 +1,6 @@
+主机: localhost
+端口: 5432
+数据库名: blog_db
+用户名: blog_user
+密码: Blog@2026
+psql -h 127.0.0.1 -p 5432 -U 用户名 -d 数据库名 -W

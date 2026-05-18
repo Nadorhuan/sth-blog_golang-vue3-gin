@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres16-local
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=blog_user
+      - POSTGRES_PASSWORD=Blog@2026
+      - POSTGRES_DB=blog_db
+      - TZ=Asia/Shanghai
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+volumes:
+  pg_data:
