@@ -2,8 +2,9 @@ package database
 
 import (
 	"log"
-	"sfh-blog/internal/config"
-	"sfh-blog/internal/models"
+
+	"blog/internal/config"
+	"blog/internal/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

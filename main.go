@@ -1,10 +1,11 @@
 package main
 
 import (
+	"blog/internal/config"
+	"blog/internal/database"
+	"blog/internal/handler"
+	"blog/internal/middleware"
 	"log"
-	"sfh-blog/internal/config"
-	"sfh-blog/internal/database"
-	"sfh-blog/internal/handler"
 
 	"github.com/gin-gonic/gin"
 )
@@ -31,10 +32,21 @@ func main() {
 			"status":  "ok",
 		})
 	})
-	// 用户注册接口
-	r.POST("/api/auth/register", handler.Register)
-	// 用户登录接口
-	r.POST("/api/auth/login", handler.Login)
+	// 公开路由，无需鉴权
+	public := r.Group("/api")
+	{
+		// 用户注册接口
+		public.POST("/register", handler.Register)
+		// 用户登录接口
+		public.POST("/login", handler.Login)
+	}
+	// 私有路由，需要鉴权
+	authApi := r.Group("/api")
+	authApi.Use(middleware.JwtAuth())
+	{
+		// 这里可以添加需要鉴权的接口，例如用户信息、文章管理等
+
+	}
 
 	// 从配置启动服务
 	log.Printf("server running on :%s\n", config.AppConfig.Port)

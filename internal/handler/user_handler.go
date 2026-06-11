@@ -5,11 +5,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"sfh-blog/internal/common"
-	"sfh-blog/internal/database"
-	"sfh-blog/internal/models"
-	"sfh-blog/internal/request"
-	"sfh-blog/internal/utils"
+	"blog/internal/common"
+	"blog/internal/database"
+	"blog/internal/models"
+	"blog/internal/request"
+	"blog/internal/utils"
 )
 
 // Register 用户注册接口

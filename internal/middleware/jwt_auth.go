@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"sfh-blog/internal/common"
-	"sfh-blog/internal/utils"
+	"blog/internal/common"
+	"blog/internal/utils"
 	"strings"
 
 	"github.com/gin-gonic/gin"

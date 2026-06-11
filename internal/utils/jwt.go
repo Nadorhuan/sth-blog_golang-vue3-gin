@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"sfh-blog/internal/config"
+	"blog/internal/config"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
