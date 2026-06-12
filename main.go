@@ -32,20 +32,38 @@ func main() {
 			"status":  "ok",
 		})
 	})
-	// 公开路由，无需鉴权
-	public := r.Group("/api")
+	// ========== 第一层：按鉴权等级拆分两大顶级组 ==========
+	// 1. 公开无鉴权大组
+	publicGroup := r.Group("/api/public")
 	{
-		// 用户注册接口
-		public.POST("/register", handler.Register)
-		// 用户登录接口
-		public.POST("/login", handler.Login)
-	}
-	// 私有路由，需要鉴权
-	authApi := r.Group("/api")
-	authApi.Use(middleware.JwtAuth())
-	{
-		// 这里可以添加需要鉴权的接口，例如用户信息、文章管理等
+		// 在公开组内，再拆分user业务子组
+		publicUser := publicGroup.Group("/user")
+		{
+			publicUser.POST("/register", handler.Register)
+			publicUser.POST("/login", handler.Login)
+		}
 
+		// 在公开组内，拆分初始化公开子组
+		publicInit := publicGroup.Group("/init")
+		{
+			publicInit.GET("/status", handler.CheckInitStatus)
+			publicInit.POST("/submit", handler.SubmitInit)
+		}
+	}
+
+	// 2. 管理员鉴权大组：全局挂载JWT中间件，组内所有接口强制鉴权
+	adminGroup := r.Group("/api/admin")
+	adminGroup.Use(middleware.JwtAuth())
+	{
+		// 鉴权组内，拆分初始化管理子组
+		adminInit := adminGroup.Group("/init")
+		{
+			adminInit.POST("/reset", handler.ResetInit)
+		}
+
+		// 未来拓展：登录后用户操作、后台管理接口都在这里新建子组
+		// adminUser := adminGroup.Group("/user")
+		// adminUser.POST("/modify-pwd", handler.ModifyPwd)
 	}
 
 	// 从配置启动服务

@@ -1,10 +1,9 @@
 package database
 
 import (
-	"log"
-
 	"blog/internal/config"
 	"blog/internal/models"
+	"log"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -42,4 +41,10 @@ func InitDB() {
 		log.Fatal("数据库迁移失败:", err)
 	}
 	log.Println("✅ 数据库初始化完成，用户表已自动创建")
+	// 自动迁移系统配置表
+	err = DB.AutoMigrate(&models.SysConfig{})
+	if err != nil {
+		log.Fatalf("sys_config数据表迁移失败: %v", err)
+	}
+	log.Println("✅ 数据库初始化完成，系统配置表已自动创建")
 }
